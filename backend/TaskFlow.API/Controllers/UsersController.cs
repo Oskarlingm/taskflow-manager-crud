@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TaskFlow.API.Data;
 using TaskFlow.API.Models;
 
 namespace TaskFlow.API.Controllers;
@@ -7,34 +9,44 @@ namespace TaskFlow.API.Controllers;
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
-    private static readonly List<User> users = new();
+    private readonly TaskFlowDbContext _context;
+
+    public UsersController(TaskFlowDbContext context)
+    {
+        _context = context;
+    }
+
 
     [HttpGet]
-    public IActionResult GetUsers()
+    public async Task<IActionResult> GetUsers()
     {
-        return Ok(users);
+        return Ok(await _context.Users.ToListAsync());
     }
 
 
     [HttpPost]
-    public IActionResult CreateUser(User user)
+    public async Task<IActionResult> CreateUser(User user)
     {
-        user.Id = users.Count + 1;
-        users.Add(user);
+        _context.Users.Add(user);
+
+        await _context.SaveChangesAsync();
 
         return Ok(user);
     }
 
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteUser(int id)
+    public async Task<IActionResult> DeleteUser(int id)
     {
-        var user = users.FirstOrDefault(x => x.Id == id);
+        var user = await _context.Users.FindAsync(id);
 
         if(user == null)
             return NotFound();
 
-        users.Remove(user);
+
+        _context.Users.Remove(user);
+
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }
