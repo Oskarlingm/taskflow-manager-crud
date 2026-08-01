@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskFlow.API.Data;
+using TaskFlow.API.DTOs;
 using TaskFlow.API.Models;
 
 namespace TaskFlow.API.Controllers;
@@ -25,8 +26,15 @@ public class TasksController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> CreateTask(TaskItem task)
+    public async Task<IActionResult> CreateTask(CreateTaskDto dto)
     {
+        var task = new TaskItem
+        {
+            Title = dto.Title,
+            Description = dto.Description,
+           Completed = false
+        };
+
         _context.Tasks.Add(task);
 
         await _context.SaveChangesAsync();
@@ -36,7 +44,7 @@ public class TasksController : ControllerBase
 
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateTask(int id, TaskItem updatedTask)
+    public async Task<IActionResult> UpdateTask(int id, UpdateTaskDto dto)
     {
         var task = await _context.Tasks.FindAsync(id);
 
@@ -44,9 +52,9 @@ public class TasksController : ControllerBase
             return NotFound();
 
 
-        task.Title = updatedTask.Title;
-        task.Description = updatedTask.Description;
-        task.Completed = updatedTask.Completed;
+        task.Title = dto.Title;
+        task.Description = dto.Description;
+        task.Completed = dto.Completed;
 
 
         await _context.SaveChangesAsync();

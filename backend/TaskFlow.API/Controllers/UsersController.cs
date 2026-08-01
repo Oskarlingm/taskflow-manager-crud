@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TaskFlow.API.Data;
+using TaskFlow.API.DTOs;
 using TaskFlow.API.Models;
 
 namespace TaskFlow.API.Controllers;
@@ -25,8 +26,14 @@ public class UsersController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> CreateUser(User user)
+    public async Task<IActionResult> CreateUser(CreateUserDto dto)
     {
+        var user = new User
+        {
+            Name = dto.Name,
+            Email = dto.Email
+        };
+
         _context.Users.Add(user);
 
         await _context.SaveChangesAsync();
