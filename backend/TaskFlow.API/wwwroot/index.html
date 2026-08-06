@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>TaskFlow Manager</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <section id="login-view" class="auth-shell">
+      <form id="login-form" class="card auth-card" novalidate>
+        <div class="brand"><span>TF</span><div><h1>TaskFlow</h1><p>Organiza. Avanza. Completa.</p></div></div>
+        <h2>Iniciar sesion</h2>
+        <label for="email">Correo electronico</label>
+        <input id="email" name="email" type="email" maxlength="120" autocomplete="username" required>
+        <label for="password">Contrasena</label>
+        <input id="password" name="password" type="password" maxlength="60" autocomplete="current-password" required>
+        <button id="login-button" type="submit">Entrar</button>
+        <p id="login-error" class="message error" role="alert"></p>
+        <p class="demo">Demo: admin@taskflow.com / TaskFlow123!</p>
+      </form>
+    </section>
+
+    <section id="app-view" class="app-shell hidden">
+      <header>
+        <div class="brand compact"><span>TF</span><div><h1>TaskFlow</h1><p>Panel de tareas</p></div></div>
+        <button id="logout-button" class="secondary">Cerrar sesion</button>
+      </header>
+      <div class="content">
+        <form id="task-form" class="card" novalidate>
+          <h2 id="form-title">Nueva tarea</h2>
+          <input id="task-id" type="hidden">
+          <label for="task-title">Titulo</label>
+          <input id="task-title" maxlength="100" required>
+          <small>Entre 3 y 100 caracteres.</small>
+          <label for="task-description">Descripcion</label>
+          <textarea id="task-description" maxlength="500" rows="5"></textarea>
+          <label id="completed-label" class="check hidden"><input id="task-completed" type="checkbox"> Tarea completada</label>
+          <div class="actions">
+            <button id="save-task" type="submit">Guardar tarea</button>
+            <button id="cancel-edit" type="button" class="secondary hidden">Cancelar</button>
+          </div>
+          <p id="form-message" class="message" role="status"></p>
+        </form>
+        <section class="card list-card">
+          <div class="list-heading"><div><h2>Mis tareas</h2><p id="task-count">0 tareas</p></div><button id="refresh-button" class="secondary">Actualizar</button></div>
+          <p id="empty-state" class="empty">Aun no hay tareas. Crea la primera.</p>
+          <div id="task-list" class="task-list"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <div id="confirm-modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="card modal-card"><h2>Eliminar tarea</h2><p>Esta accion no se puede deshacer.</p><div class="actions"><button id="confirm-delete" class="danger">Si, eliminar</button><button id="cancel-delete" class="secondary">Cancelar</button></div></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
